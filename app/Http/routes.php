@@ -11,8 +11,6 @@
 |
 */
 /*
-Route::get('/','PageController@home'); 
-
 Route::get('users', function() {
     
      $users = App\Users::find(1);
@@ -33,6 +31,8 @@ Route::get('/main', 'PageController@main');
 */
 Route::group(['middleware' => 'web'], function () {
     Route::auth();
-
-    Route::get('/', 'HomeController@index');
+    
+    Route::get('/', 'HomeController@index'); 
+    Route::get('application_form','PageController@home');
+    Route::post('application_form','PageController@saveForm');
 });

@@ -45,7 +45,7 @@ class AuthController extends Controller
     {
         $this->middleware('guest', ['except' => 'logout']);
     }
-
+    
     /**
      * Get a validator for an incoming registration request.
      *
@@ -58,6 +58,7 @@ class AuthController extends Controller
             'first_name' => 'required|max:50',
             'last_name' => 'required|max:50',
             'ssn' => 'required|min:13|max:13|unique:users',
+            'role_id',
             'username' => 'required|max:50|unique:users',
             'email' => 'required|email|max:50|unique:users',
             'password' => 'required|confirmed|min:4',
@@ -72,11 +73,12 @@ class AuthController extends Controller
      */
     protected function create(array $data)
     {
+        $role_id = '2';
         return User::create([
             'first_name' => $data['first_name'],
             'last_name' => $data['last_name'],
             'ssn' => $data['ssn'],
-            'role_id' => "2",
+            'role_id' => $role_id,
             'username' => $data['username'],
             'email' => $data['email'],
             'password' => bcrypt($data['password']),
