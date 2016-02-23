@@ -23,6 +23,9 @@
             .fa-btn {
                 margin-right: 6px;
             }
+            
+            div#buttons *{display:inline}
+
         </style>
     </head>
     <body id="app-layout">
@@ -48,7 +51,7 @@
                 <div class="collapse navbar-collapse" id="app-navbar-collapse">
                     <!-- Left Side Of Navbar -->
                     <ul class="nav navbar-nav">
-                        <li><a href="{{ url('/home') }}">Home</a></li>
+                        <li><a href="{{ url('/') }}">Home</a></li>
                         @if (Auth::check())
                         <?php $current_user = Auth::user() ->role_id ?>
                         @if ($current_user == "2")
