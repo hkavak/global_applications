@@ -58,6 +58,7 @@
                         <li><a href="{{ url('/application_form') }}">Application Form</a></li>
                         @else
                         <li><a href="{{ url('/check_application') }}">Check Applications</a></li>
+                        <li><a href="{{ url('/status_application') }}">Search Application</a></li>
                         @endif
                         @endif
                     </ul>

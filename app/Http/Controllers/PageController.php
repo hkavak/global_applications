@@ -8,8 +8,6 @@ use Illuminate\Support\Facades\Input;
 use \Illuminate\Support\Facades\Request as Req;
 use Session;
 use Auth;
-use DB;
-use View;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -19,28 +17,48 @@ use View;
 
 class PageController extends Controller {
 
+    /**
+     * This is the constructor of this class, which includes the middleware auth
+     * so that non logged in personal can't access this class
+     */
     public function __construct() {
         $this->middleware('auth');
     }
 
+    /**
+     * This method is the first that will be called when we access the 
+     * application_form page. This method will, if not already existing create
+     * three arrays which will be stored in the session array for further use
+     * @return view
+     */
     public function home() {
 
         $comp = \App\Competence::lists('name');
-        $competenceArray = [];
-        $periodArray = [];
-        $competences = [];
+        if (!Session::has('competenceArray') || !Session::has('periodArray') || !Session::has('competences')) {
 
-        foreach ($comp as $current_comp) {
-            $competences[] = $current_comp;
+            $competenceArray = [];
+            $periodArray = [];
+            $competences = [];
+
+            foreach ($comp as $current_comp) {
+                $competences[] = $current_comp;
+            }
+
+            Session::put('competenceArray', $competenceArray);
+            Session::put('periodArray', $periodArray);
+            Session::put('competences', $competences);
         }
-
-        Session::put('competenceArray', $competenceArray);
-        Session::put('periodArray', $periodArray);
-        Session::put('competences', $competences);
 
         return view('application_form');
     }
 
+    /**
+     * This method is called when a post request is received from the 
+     * corresponding page. The method checks which component was triggered and
+     * calls the corresponding method
+     * @param Request $request
+     * @return view
+     */
     public function postButton(Request $request) {
         if (Input::get('save_comp')) {
             $this->competenceForm($request);
@@ -57,7 +75,14 @@ class PageController extends Controller {
         }
     }
 
-    public function competenceForm(Request $request) {
+    /**
+     * This method fetches the visitors competence and year he/she has filled
+     * in on the form. This will then be saved on an object which will then be
+     * pushed up in the session array
+     * @param Request $request
+     * @return view
+     */
+    private function competenceForm(Request $request) {
         $this->validate($request, [
             'years' => 'required|max:3',
         ]);
@@ -71,7 +96,14 @@ class PageController extends Controller {
         return view('application_form');
     }
 
-    public function periodForm(Request $request) {
+    /**
+     * This method fetches the visitors period of available work he/she has 
+     * filled in on the form. This will the be saved in an object and push in
+     * to it's corresponding array in the session array
+     * @param Request $request
+     * @return view
+     */
+    private function periodForm(Request $request) {
         $this->validate($request, [
             'from_date' => 'required|date_format:Y-m-d',
             'to_date' => 'required|date_format:Y-m-d|after:from_date',
@@ -84,9 +116,16 @@ class PageController extends Controller {
         return view('application_form');
     }
 
-    public function submitForm() {
+    /**
+     * This method will be creating an application row in the database and fill
+     * it upp with the visitors information. It will also create the required
+     * foreign key linked tables and save all of them in the database
+     * @return view
+     */
+    private function submitForm() {
         $application_form = new \App\Application_form;
-        $application_form->user_id = Auth::user()->id;$application_form->status = 'pending';
+        $application_form->user_id = Auth::user()->id;
+        $application_form->status = 'pending';
         $application_form->date = date('Y-m-d');
         $application_form->save();
 
@@ -94,7 +133,7 @@ class PageController extends Controller {
         foreach (Session::pull('competenceArray') as $comp) {
             $competence_profile = new \App\Competence_profile;
             $competence_profile->application_id = $application_id;
-            $competence_profile->competence_id = DB::table('competences')->where('name', $comp->competence)->value('id');
+            $competence_profile->competence_id = \App\Competence::where('name', $comp->competence)->value('id');
             $competence_profile->years_of_experience = $comp->years;
             $competence_profile->save();
         }
@@ -102,13 +141,17 @@ class PageController extends Controller {
             $periods = new \App\Period;
             $periods->application_id = $application_id;
             $periods->from_date = $comp->from_date;
-            $periods->to_date = $comp->to_date;
-            $periods->save();
+            $periods->to_date = $comp->to_date; $periods->save();
         }
         return view('submit_success');
     }
 
-    public function cancelForm() {
+    /**
+     * This method will erase the arrays that would be used to to save period 
+     * and competence from the session array
+     * @return view
+     */
+    private function cancelForm() {
         Session::forget('competenceArray');
         Session::forget('periodArray');
         return view('application_form');

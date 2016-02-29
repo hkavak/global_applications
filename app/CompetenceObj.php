@@ -14,11 +14,19 @@ namespace App;
  * @author Hasan
  */
 class CompetenceObj {
+
     public $competence;
     public $years;
-    
+
+    /**
+     * This constructor is used to create a competence object that includes 
+     * the given competence and year
+     * @param type $competence
+     * @param type $years
+     */
     public function __construct($competence, $years) {
         $this->competence = $competence;
         $this->years = $years;
     }
+
 }

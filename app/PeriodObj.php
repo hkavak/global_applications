@@ -14,11 +14,19 @@ namespace App;
  * @author Hasan
  */
 class PeriodObj {
+
     public $from_date;
     public $to_date;
-    
+
+    /**
+     * This constructor is used to create a period object with the parameters
+     * given
+     * @param type $from_date
+     * @param type $to_date
+     */
     public function __construct($from_date, $to_date) {
         $this->from_date = $from_date;
         $this->to_date = $to_date;
     }
+
 }

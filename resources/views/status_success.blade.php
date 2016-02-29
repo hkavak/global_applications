@@ -5,11 +5,10 @@
     <div class="row">
         <div class="col-md-10 col-md-offset-1">
             <div class="panel panel-default">
-                <div class="panel-heading">Submitted Form</div>
+                <div class="panel-heading">Application Status</div>
 
                 <div class="panel-body">
-                    <p>Hi {{ Auth::user()->first_name }}, We have received your application. We hope to 
-                        see you soon </p>
+                    <p>The application you have accepted/rejected have been successfully saved</p>
                 </div>
             </div>
         </div>
