@@ -37,5 +37,6 @@ Route::group(['middleware' => 'web'], function () {
         Route::post('check_application', 'checkController@postButton');
         Route::get('status_application', 'StatusController@start');
         Route::post('status_application', 'StatusController@postButton');
+        Route::get('pdf','StatusController@convertPDF');
     });
 });

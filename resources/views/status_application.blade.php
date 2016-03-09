@@ -10,9 +10,9 @@
                     <h3>Show personal Application depending on it's id</h3>
                     <div>
                         @if(Session::has('listArray'))
-                        <h4>Personal information</h4>
                         @foreach(Session::get('listArray') as $object)
                         @if(Session::get('currentId') == $object->application_id && Session::has('currentId'))
+                        <h4>Personal information</h4>
                         <li><p>Applicant name: {{$object->first_name}} {{$object->last_name}}</p></li>
                         <li><p>Social security number: {{$object->ssn}}</p></li>
                         <li><p>Email: {{$object->email}}</p></li>
@@ -61,6 +61,11 @@
                             {!! Form::close() !!}
                         </form>
                     </div>
+                    <br>
+                    <form class="form-horizontal" role="form" action="pdf">
+                        {!! csrf_field() !!}
+                        <input type="submit" name="pdf" value="Convert to PDF">
+                    </form>
                 </div>
                 <br>
                 @if($errors->any())

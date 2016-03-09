@@ -3,11 +3,13 @@
 namespace App\Http\Controllers;
 
 use \Illuminate\Http\Request;
+use Barryvdh\DomPDF\Facade as PDF;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Input;
 use \Illuminate\Support\Facades\Request as Req;
 use Session;
 use Log;
+use DB;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -86,19 +88,20 @@ class StatusController extends Controller {
         ]);
         Session::forget('periodArray');
         Session::forget('competenceArray');
-        $currentId = Req::get('appId');
-        $competence_profile = \App\Competence_profile::where('application_id', $currentId)->get();
-        foreach ($competence_profile as $profile) {
-            $competence = \App\Competence::where('id', $profile->competence_id)->value('name');
-            $competenceObj = new \App\CompetenceObj($competence, $profile->years_of_experience);
-            Session::push('competenceArray', $competenceObj);
-        }
-        $periods = \App\Period::where('application_id', $currentId)->get();
-        foreach ($periods as $period) {
-            $periodObj = new \App\PeriodObj($period->from_date, $period->to_date);
-            Session::push('periodArray', $periodObj);
-        }
-
+        DB::transaction(function () {
+            $currentId = Req::get('appId');
+            $competence_profile = \App\Competence_profile::where('application_id', $currentId)->get();
+            foreach ($competence_profile as $profile) {
+                $competence = \App\Competence::where('id', $profile->competence_id)->value('name');
+                $competenceObj = new \App\CompetenceObj($competence, $profile->years_of_experience);
+                Session::push('competenceArray', $competenceObj);
+            }
+            $periods = \App\Period::where('application_id', $currentId)->get();
+            foreach ($periods as $period) {
+                $periodObj = new \App\PeriodObj($period->from_date, $period->to_date);
+                Session::push('periodArray', $periodObj);
+            }
+        });
         return view('status_application');
     }
 
@@ -114,6 +117,15 @@ class StatusController extends Controller {
         Session::forget('competenceArray');
         \App\application_form::where('id', $id)->update(['status' => $statusUpdate]);
         return view('status_success');
+    }
+
+    /**
+     * This method converts a PHP file to a PDF document
+     * @return stream to show in browser
+     */
+    public function convertPDF() {
+        $pdf = PDF::loadView('pdf', Session::get('competenceArray'));
+        return $pdf->stream();
     }
 
 }

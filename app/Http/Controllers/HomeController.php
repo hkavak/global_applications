@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests;
 use Illuminate\Http\Request;
+use Log;
+use Auth;
 
 class HomeController extends Controller {
 
@@ -22,6 +24,7 @@ class HomeController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function index() {
+        Log::info('The currently logged in person: ' . Auth::user()->first_name . Auth::user()->last_name);
         return view('home');
     }
 

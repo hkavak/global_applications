@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Input;
 use \Illuminate\Support\Facades\Request as Req;
 use DateTime;
 use Session;
+use DB;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -73,20 +74,22 @@ class CheckController extends Controller {
         $this->validate($request, [
             'name' => 'required',
         ]);
-        Session::forget('listArray');
-        $name = Req::get('name');
-        $users = \App\User::where('first_name', $name)->orWhere('last_name', $name)->get();
-        foreach ($users as $user) {
-            $listApplicants = \App\User::find($user->id)->application_forms()->get();
-        }
-        foreach ($listApplicants as $application) {
-            $first_name = \App\User::where('id', $application->user_id)->value('first_name');
-            $last_name = \App\User::where('id', $application->user_id)->value('last_name');
-            $ssn = \App\User::where('id', $application->user_id)->value('ssn');
-            $email = \App\User::where('id', $application->user_id)->value('email');
-            $applicationDTO = new \App\ApplicationDTO($application->id, $first_name, $last_name, $ssn, $email, $application->date, $application->status);
-            Session::push('listArray', $applicationDTO);
-        }
+        DB::transaction(function () {
+            Session::forget('listArray');
+            $name = Req::get('name');
+            $users = \App\User::where('first_name', $name)->orWhere('last_name', $name)->get();
+            foreach ($users as $user) {
+                $listApplicants = \App\User::find($user->id)->application_forms()->get();
+            }
+            foreach ($listApplicants as $application) {
+                $first_name = \App\User::where('id', $application->user_id)->value('first_name');
+                $last_name = \App\User::where('id', $application->user_id)->value('last_name');
+                $ssn = \App\User::where('id', $application->user_id)->value('ssn');
+                $email = \App\User::where('id', $application->user_id)->value('email');
+                $applicationDTO = new \App\ApplicationDTO($application->id, $first_name, $last_name, $ssn, $email, $application->date, $application->status);
+                Session::push('listArray', $applicationDTO);
+            }
+        });
     }
 
     /**
@@ -101,19 +104,21 @@ class CheckController extends Controller {
             'competence' => 'required',
         ]);
         Session::forget('listArray');
-        $competence_id = \App\Competence::where('name', Req::get('competence'))->value('id');
-        $competence_profile = \App\Competence::find($competence_id)->competence_profiles()->get();
-        foreach ($competence_profile as $profile) {
-            $listApplication = \App\Application_form::where('id', $profile->application_id)->get();
-            foreach ($listApplication as $application) {
-                $first_name = \App\User::where('id', $application->user_id)->value('first_name');
-                $last_name = \App\User::where('id', $application->user_id)->value('last_name');
-                $ssn = \App\User::where('id', $application->user_id)->value('ssn');
-                $email = \App\User::where('id', $application->user_id)->value('email');
-                $applicationDTO = new \App\ApplicationDTO($application->id, $first_name, $last_name, $ssn, $email, $application->date, $application->status);
-                Session::push('listArray', $applicationDTO);
+        DB::transaction(function () {
+            $competence_id = \App\Competence::where('name', Req::get('competence'))->value('id');
+            $competence_profile = \App\Competence::find($competence_id)->competence_profiles()->get();
+            foreach ($competence_profile as $profile) {
+                $listApplication = \App\Application_form::where('id', $profile->application_id)->get();
+                foreach ($listApplication as $application) {
+                    $first_name = \App\User::where('id', $application->user_id)->value('first_name');
+                    $last_name = \App\User::where('id', $application->user_id)->value('last_name');
+                    $ssn = \App\User::where('id', $application->user_id)->value('ssn');
+                    $email = \App\User::where('id', $application->user_id)->value('email');
+                    $applicationDTO = new \App\ApplicationDTO($application->id, $first_name, $last_name, $ssn, $email, $application->date, $application->status);
+                    Session::push('listArray', $applicationDTO);
+                }
             }
-        }
+        });
     }
 
     /**
@@ -127,16 +132,18 @@ class CheckController extends Controller {
             'registration' => 'required|date_format:Y-m-d',
         ]);
         Session::forget('listArray');
-        $date = Req::get('registration');
-        $listApplications = \App\Application_form::where('date', $date)->get();
-        foreach ($listApplications as $application) {
-            $first_name = \App\User::where('id', $application->user_id)->value('first_name');
-            $last_name = \App\User::where('id', $application->user_id)->value('last_name');
-            $ssn = \App\User::where('id', $application->user_id)->value('ssn');
-            $email = \App\User::where('id', $application->user_id)->value('email');
-            $applicationDTO = new \App\ApplicationDTO($application->id, $first_name, $last_name, $ssn, $email, $application->date, $application->status);
-            Session::push('listArray', $applicationDTO);
-        }
+        DB::transaction(function () {
+            $date = Req::get('registration');
+            $listApplications = \App\Application_form::where('date', $date)->get();
+            foreach ($listApplications as $application) {
+                $first_name = \App\User::where('id', $application->user_id)->value('first_name');
+                $last_name = \App\User::where('id', $application->user_id)->value('last_name');
+                $ssn = \App\User::where('id', $application->user_id)->value('ssn');
+                $email = \App\User::where('id', $application->user_id)->value('email');
+                $applicationDTO = new \App\ApplicationDTO($application->id, $first_name, $last_name, $ssn, $email, $application->date, $application->status);
+                Session::push('listArray', $applicationDTO);
+            }
+        });
     }
 
     /**
@@ -147,27 +154,27 @@ class CheckController extends Controller {
      * @param Request $request
      */
     private function fetchPeriod(Request $request) {
-        $this->validate($request, [
-            'dateFrom' => 'required|date_format:Y-m-d',
-            'dateTo' => 'required|date_format:Y-m-d|after:dateFrom']);
+        $this->validate($request, ['dateFrom' => 'required|date_format:Y-m-d', 'dateTo' => 'required|date_format:Y-m-d|after:dateFrom']);
 
         Session::forget('listArray');
-        $fromDate = new \DateTime(Req::get('dateFrom'));
-        $toDate = new \DateTime(Req::get('dateTo'));
-        $allApplications = \App\Application_form::all();
-        foreach ($allApplications as $application) {
-            $periods = \App\Period::where('application_id', $application->id)->get();
-            foreach ($periods as $period) {
-                if ($this->periodCheck(new \DateTime($period->from_date), new \DateTime($period->to_date), $fromDate, $toDate) == 1) {
-                    $first_name = \App\User::where('id', $application->user_id)->value('first_name');
-                    $last_name = \App\User::where('id', $application->user_id)->value('last_name');
-                    $ssn = \App\User::where('id', $application->user_id)->value('ssn');
-                    $email = \App\User::where('id', $application->user_id)->value('email');
-                    $applicationDTO = new \App\ApplicationDTO($application->id, $first_name, $last_name, $ssn, $email, $application->date, $application->status);
-                    Session::push('listArray', $applicationDTO);
+        DB::transaction(function () {
+            $fromDate = new \DateTime(Req::get('dateFrom'));
+            $toDate = new \DateTime(Req::get('dateTo'));
+            $allApplications = \App\Application_form::all();
+            foreach ($allApplications as $application) {
+                $periods = \App\Period::where('application_id', $application->id)->get();
+                foreach ($periods as $period) {
+                    if ($this->periodCheck(new \DateTime($period->from_date), new \DateTime($period->to_date), $fromDate, $toDate) == 1) {
+                        $first_name = \App\User::where('id', $application->user_id)->value('first_name');
+                        $last_name = \App\User::where('id', $application->user_id)->value('last_name');
+                        $ssn = \App\User::where('id', $application->user_id)->value('ssn');
+                        $email = \App\User::where('id', $application->user_id)->value('email');
+                        $applicationDTO = new \App\ApplicationDTO($application->id, $first_name, $last_name, $ssn, $email, $application->date, $application->status);
+                        Session::push('listArray', $applicationDTO);
+                    }
                 }
             }
-        }
+        });
     }
 
     /**

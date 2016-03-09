@@ -63,7 +63,7 @@
                         @if(Session::has('listArray'))
                         @foreach(Session::get('listArray') as $object)
                         <li><p>Application id: {{$object->application_id}}, Name: {{$object->first_name}} {{$object->last_name}}, 
-                                Registration date: {{$object->submissionDate}}, Application status: {{$object->status}}</p></li>
+                                Submission date: {{$object->submissionDate}}, Application status: {{$object->status}}</p></li>
                         @endforeach
                         @endif
                     </div>
