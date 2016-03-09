@@ -3,7 +3,6 @@
 namespace App\Exceptions;
 
 use Exception;
-use Illuminate\Database\QueryException;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Symfony\Component\HttpKernel\Exception\HttpException;
@@ -11,6 +10,7 @@ use Illuminate\Foundation\Validation\ValidationException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Log;
 
 class Handler extends ExceptionHandler {
 
@@ -59,8 +59,9 @@ class Handler extends ExceptionHandler {
             return response(view('errors.503'), 404);
         }
         //Database is down
-        elseif ($e instanceof QueryException) {
-            return response(view('errors.503'), 2002);
+        elseif ($e instanceof \PDOException) {
+            Log::error('The database is down and currently not available');
+            return response(view('errors.503'), 2003);
         }
         return parent::render($request, $e);
     }

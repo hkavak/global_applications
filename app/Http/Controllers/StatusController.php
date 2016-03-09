@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Input;
 use \Illuminate\Support\Facades\Request as Req;
 use Session;
+use Auth;
 use Log;
 use DB;
 
@@ -63,11 +64,13 @@ class StatusController extends Controller {
             return view('status_application');
         } elseif (Input::get('accept')) {
             $this->statusUpdate('accepted', Session::get('currentId'));
+            Log::info('The recruiter that performed the operation: ' . Auth::user()->first_name . Auth::user()->last_name);
             Log::info('The application with this id is accepted: ' . Session::get('currentId'));
             Session::forget('currentId');
             return view('status_success');
         } elseif (Input::get('reject')) {
             $this->statusUpdate('rejected', Session::get('currentId'));
+            Log::info('The recruiter that performed the operation: ' . Auth::user()->first_name . Auth::user()->last_name);
             Log::info('The application with this id is rejected: ' . Session::get('currentId'));
             Session::forget('currentId');
             return view('status_success');
