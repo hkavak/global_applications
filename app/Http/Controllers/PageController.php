@@ -9,6 +9,7 @@ use \Illuminate\Support\Facades\Request as Req;
 use Session;
 use Auth;
 use DB;
+use App;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -72,6 +73,15 @@ class PageController extends Controller {
             return view('submit_success');
         } elseif (Input::get('cancel')) {
             $this->cancelForm();
+            return view('application_form');
+        }elseif (Input::get('en')) {
+            App::setLocale('en');
+            return view('application_form');
+        }elseif (Input::get('sv')) {
+            App::setLocale('sv');
+            return view('application_form');
+        }elseif (Input::get('tr')) {
+            App::setLocale('tr');
             return view('application_form');
         }
     }

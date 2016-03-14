@@ -23,7 +23,7 @@
             .fa-btn {
                 margin-right: 6px;
             }
-            
+
             div#buttons *{display:inline}
 
         </style>
@@ -46,19 +46,19 @@
                         Laravel
                     </a>
                 </div>
-        
+
 
                 <div class="collapse navbar-collapse" id="app-navbar-collapse">
                     <!-- Left Side Of Navbar -->
                     <ul class="nav navbar-nav">
-                        <li><a href="{{ url('/') }}">Home</a></li>
+                        <li><a href="{{ url('/') }}">{{ trans('localization.home') }}</a></li>
                         @if (Auth::check())
-                        <?php $current_user = Auth::user() ->role_id ?>
+                        <?php $current_user = Auth::user()->role_id ?>
                         @if ($current_user == "2")
-                        <li><a href="{{ url('/application_form') }}">Application Form</a></li>
+                        <li><a href="{{ url('/application_form') }}">{{ trans('localization.applicationForm') }}</a></li>
                         @else
-                        <li><a href="{{ url('/check_application') }}">Check Applications</a></li>
-                        <li><a href="{{ url('/status_application') }}">Search Application</a></li>
+                        <li><a href="{{ url('/check_application') }}">{{ trans('localization.checkApplication') }}</a></li>
+                        <li><a href="{{ url('/status_application') }}">{{ trans('localization.searchApplication') }}</a></li>
                         @endif
                         @endif
                     </ul>
@@ -67,8 +67,8 @@
                     <ul class="nav navbar-nav navbar-right">
                         <!-- Authentication Links -->
                         @if (Auth::guest())
-                        <li><a href="{{ url('/login') }}">Login</a></li>
-                        <li><a href="{{ url('/register') }}">Register</a></li>
+                        <li><a href="{{ url('/login') }}">{{ trans('localization.login') }}</a></li>
+                        <li><a href="{{ url('/register') }}">{{ trans('localization.register') }}</a></li>
                         @else
                         <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
@@ -76,10 +76,30 @@
                             </a>
 
                             <ul class="dropdown-menu" role="menu">
-                                <li><a href="{{ url('/logout') }}"><i class="fa fa-btn fa-sign-out"></i>Logout</a></li>
+                                <li><a href="{{ url('/logout') }}"><i class="fa fa-btn fa-sign-out"></i>{{ trans('localization.logout') }}</a></li>
                             </ul>
                         </li>
                         @endif
+                        <li>
+                            <form class="form-horizontal" role="form" method="POST">
+                                {!! csrf_field() !!}
+                                <input type="submit" name="en" value="EN">
+                            </form>
+                        </li>
+
+                        <li>
+                            <form class="form-horizontal" role="form" method="POST">
+                                {!! csrf_field() !!}
+                                <input type="submit" name="sv" value="SV">
+                            </form>
+                        </li>
+                        <li>
+                            <form class="form-horizontal" role="form" method="POST">
+                                {!! csrf_field() !!}
+                                <input type="submit" name="tr" value="TR">
+                            </form>
+                        </li>
+                        </form>
                     </ul>
                 </div>
             </div>

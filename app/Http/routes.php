@@ -28,6 +28,7 @@ Route::group(['middleware' => 'web'], function () {
     Route::auth();
 
     Route::get('/', 'HomeController@index');
+    Route::post('/', 'HomeController@postButton');
     Route::get('application_form', 'PageController@home');
     Route::post('application_form', 'PageController@postButton');
 

@@ -5,10 +5,10 @@
     <div class="row">
         <div class="col-md-10 col-md-offset-1">
             <div class="panel panel-default">
-                <div class="panel-heading">Application Status</div>
+                <div class="panel-heading">{{ trans('localization.apStat') }}</div>
 
                 <div class="panel-body">
-                    <p>The application you have accepted/rejected have been successfully saved</p>
+                    <p>{{ trans('localization.apStatMess') }}</p>
                 </div>
             </div>
         </div>

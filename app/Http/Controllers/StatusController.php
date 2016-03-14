@@ -11,6 +11,7 @@ use Session;
 use Auth;
 use Log;
 use DB;
+use App;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -74,6 +75,15 @@ class StatusController extends Controller {
             Log::info('The application with this id is rejected: ' . Session::get('currentId'));
             Session::forget('currentId');
             return view('status_success');
+        }elseif (Input::get('en')) {
+            App::setLocale('en');
+            return view('status_application');
+        }elseif (Input::get('sv')) {
+            App::setLocale('sv');
+            return view('status_application');
+        }elseif (Input::get('tr')) {
+            App::setLocale('tr');
+            return view('status_application');
         }
     }
 

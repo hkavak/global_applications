@@ -9,6 +9,7 @@ use \Illuminate\Support\Facades\Request as Req;
 use DateTime;
 use Session;
 use DB;
+use App;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -60,6 +61,15 @@ class CheckController extends Controller {
             return view('check_application');
         } elseif (Input::get('display_period')) {
             $this->fetchPeriod($request);
+            return view('check_application');
+        }elseif (Input::get('en')) {
+            App::setLocale('en');
+            return view('check_application');
+        }elseif (Input::get('sv')) {
+            App::setLocale('sv');
+            return view('check_application');
+        }elseif (Input::get('tr')) {
+            App::setLocale('tr');
             return view('check_application');
         }
     }

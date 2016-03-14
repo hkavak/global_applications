@@ -5,46 +5,46 @@
     <div class="row">
         <div class="col-md-8 col-md-offset-2">
             <div class="panel panel-default">
-                <div class="panel-heading">Application Form</div>
+                <div class="panel-heading">{{ trans('localization.applicationForm') }}</div>
                 <div class="panel-body">
-                    <h4>Competence and experience</h4>
+                    <h4>{{ trans('localization.competenceHeader') }}</h4>
                     <form class="form-horizontal" role="form" method="POST">
                         {!! csrf_field() !!}
                         <div class="form">
                             {!! Form::open(array('url' => 'application_form')) !!}
-                            {!! Form::label('Select Competence: ') !!}
+                            {{ trans('localization.competenceLabel') }}
                             {!! Form::select('competence', Session::get('competences')) !!}
-                            {!! Form::label('Years of experience: ') !!}
+                            {{ trans('localization.yearsLabel') }}
                             {!! Form::text('years') !!}
                             <div>
-                                <input type="submit" name="save_comp" value="Save">
+                                <input type="submit" name="save_comp" value="{{ trans('localization.save') }}">
                             </div>
                             {!! Form::close() !!}
 
                             @if(Session::has('competenceArray'))
                             @foreach(Session::get('competenceArray') as $object)
-                            <li><p>Worked with {{$object->competence}} for {{$object->years}} years</p></li>
+                            <li><p>{{ trans('localization.competenceText',['competence' => $object->competence, 'years' => $object->years]) }}</p></li>
                             @endforeach
                             @endif
                         </div>
                         <br>
-                        <h4>Select period of work</h4>
+                        <h4>{{ trans('localization.periodHeader') }}</h4>
                         <form class="form-horizontal" role="form" method="POST">
                             {!! csrf_field() !!}
                             <div class="form">
                                 {!! Form::open(array('url' => 'application_form')) !!}
-                                {!! Form::label('From: ') !!}
+                                {{ trans('localization.fromLabel') }}
                                 {!! Form::text('from_date') !!}
-                                {!! Form::label('To: ') !!}
+                                {{ trans('localization.toLabel') }}
                                 {!! Form::text('to_date') !!}
                                 <div>
-                                    <input type="submit" name="save_period" value="Save">
+                                    <input type="submit" name="save_period" value="{{ trans('localization.save') }}">
                                 </div>
                                 {!! Form::close() !!}
 
                                 @if(Session::has('periodArray'))
                                 @foreach(Session::get('periodArray') as $object)
-                                <li><p>Can work from {{$object->from_date}} to {{$object->to_date}}</p></li>
+                                <li><p>{{ trans('localization.periodText',['fromDate' => $object->from_date, 'toDate' => $object->to_date]) }}</p></li>
                                 @endforeach
                                 @endif
                             </div>
@@ -56,8 +56,8 @@
                                 <div id="buttons">
                                     <form class="form-horizontal" role="form" method="POST">
                             {!! csrf_field() !!}
-                            <input type="submit" name="submit" value="Submit Form">
-                            <input type="submit" name="cancel" value="Cancel">
+                            <input type="submit" name="submit" value="{{ trans('localization.submitForm') }}">
+                            <input type="submit" name="cancel" value="{{ trans('localization.cancel') }}">
                                     </form>
                                 </div>
                             </div>
