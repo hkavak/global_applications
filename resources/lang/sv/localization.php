@@ -1,6 +1,6 @@
 <?php
 
-/* 
+/*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
@@ -51,11 +51,18 @@ return [
     'accept' => 'Acceptera',
     'reject' => 'Avböja',
     'pdf' => 'Konvertera till PDF',
-     'dash' => 'Tavla',
+    'dash' => 'Tavla',
     'loggedIn' => 'Du är inloggad!',
     'apStat' => 'Applikationens Status',
     'apStatMess' => 'Applikationen som du har accepterat/avböjt har blivit registrerat',
     'hej' => 'Hej',
     'formMess' => 'Vi har tagit emot din applikation. På återseende',
-    'subForm' => 'Inlämnad Form', 
+    'subForm' => 'Inlämnad Form',
+    'competences' => '{1} Korvgrillning|{2} Karuselldrift|{3} Biljettförsäljning|
+        {4} Städning|{5} Servering|{6} Matlagning|
+        {7} Säkerhet|{8} Underhållning',
+    'roles' => '{1} Anställare|{2} Sökare',
+    'pending' => 'avvaktar',
+    'accepted' => 'accepterat',
+    'rejected' => 'avböjt',
 ];

@@ -10,6 +10,7 @@ use DateTime;
 use Session;
 use DB;
 use App;
+use Lang;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -50,6 +51,7 @@ class CheckController extends Controller {
      * @return view
      */
     public function postButton(Request $request) {
+        $language = null;
         if (Input::get('display_name')) {
             $this->fetchName($request);
             return view('check_application');
@@ -62,14 +64,20 @@ class CheckController extends Controller {
         } elseif (Input::get('display_period')) {
             $this->fetchPeriod($request);
             return view('check_application');
-        }elseif (Input::get('en')) {
+        } elseif (Input::get('en')) {
             App::setLocale('en');
+            Lang::setFallback('en');
+            $this->changeLanguage('en');
             return view('check_application');
-        }elseif (Input::get('sv')) {
+        } elseif (Input::get('sv')) {
             App::setLocale('sv');
+            Lang::setFallback('sv');
+            $this->changeLanguage('sv');
             return view('check_application');
-        }elseif (Input::get('tr')) {
+        } elseif (Input::get('tr')) {
             App::setLocale('tr');
+            Lang::setFallback('tr');
+            $this->changeLanguage('tr');
             return view('check_application');
         }
     }
@@ -185,6 +193,88 @@ class CheckController extends Controller {
                 }
             }
         });
+    }
+
+    private function changeLanguage($language) {
+        $this->competenceLanguage($language);
+        $this->roleLanguage($language);
+        $this->statusLanguage($language);
+    }
+
+    private function competenceLanguage($language) {
+        $competences = \App\Competence::all();
+        $increment = 0;
+        if ($language == 'en') {
+            foreach ($competences as $competence) {
+                $increment++;
+                \App\Competence::where('id', $increment)->update(['name' => trans_choice('localization.competences', $increment)]);
+            }
+        } elseif ($language == 'sv') {
+            foreach ($competences as $competence) {
+                $increment++;
+                \App\Competence::where('id', $increment)->update(['name' => trans_choice('localization.competences', $increment)]);
+            }
+        } elseif ($language == 'tr') {
+            foreach ($competences as $competence) {
+                $increment++;
+                \App\Competence::where('id', $increment)->update(['name' => trans_choice('localization.competences', $increment)]);
+            }
+        }
+    }
+
+    private function roleLanguage($language) {
+        $roles = \App\Role::all();
+        $increment = 0;
+        if ($language == 'en') {
+            foreach ($roles as $role) {
+                $increment++;
+                \App\Role::where('id', $increment)->update(['name' => trans_choice('localization.roles', $increment)]);
+            }
+        } elseif ($language == 'sv') {
+            foreach ($roles as $role) {
+                $increment++;
+                \App\Role::where('id', $increment)->update(['name' => trans_choice('localization.roles', $increment)]);
+            }
+        } elseif ($language == 'tr') {
+            foreach ($roles as $role) {
+                $increment++;
+                \App\Role::where('id', $increment)->update(['name' => trans_choice('localization.roles', $increment)]);
+            }
+        }
+    }
+
+    private function statusLanguage($language) {
+        $applications = \App\Application_form::all();
+        $increment = 0;
+        if ($language == 'en') {
+            foreach ($applications as $application) {
+                $status = $application->status;
+                $increment++;
+                $this->decideStatus($status, $increment);
+            }
+        } elseif ($language == 'sv') {
+            foreach ($applications as $application) {
+                $status = $application->status;
+                $increment++;
+                $this->decideStatus($status, $increment);
+            }
+        } elseif ($language == 'tr') {
+            foreach ($applications as $application) {
+                $status = $application->status;
+                $increment++;
+                $this->decideStatus($status, $increment);
+            }
+        }
+    }
+
+    private function decideStatus($status, $increment) {
+        if ($status == 'pending' || $status == 'avvaktar' || $status == 'degerlendiriliyor') {
+            \App\Application_form::where('id', $increment)->update(['status' => trans('localization.pending')]);
+        } elseif ($status == 'accepted' || $status == 'accepterat' || $status == 'Kabul edildi') {
+            \App\Application_form::where('id', $increment)->update(['status' => trans('localization.accepted')]);
+        } elseif ($status == 'rejected' || $status == 'avböjt' || $status == 'Kabul edilmedi') {
+            \App\Application_form::where('id', $increment)->update(['status' => trans('localization.rejected')]);
+        }
     }
 
     /**

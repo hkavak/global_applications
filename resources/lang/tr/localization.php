@@ -1,6 +1,6 @@
 <?php
 
-/* 
+/*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
@@ -8,7 +8,7 @@
  */
 
 return [
-  'home' => 'Ev',
+    'home' => 'Ev',
     'applicationForm' => 'Aplikasyon Formu',
     'checkApplication' => 'Aplikasyonlari kontroll et',
     'searchApplication' => 'Aplikasyon tara',
@@ -57,5 +57,12 @@ return [
     'apStatMess' => 'Kabul etiginiz/reddetiginiz aplikasyon kaydedildi',
     'hej' => 'Merhaba',
     'formMess' => 'Aplikasyonunuzu kaydetik. Bidahaki sefere görusmek uzere',
-    'subForm' => 'Kaydedilis Form', 
+    'subForm' => 'Kaydedilis Form',
+    'competences' => '{1} Sosis kizartma|{2} fuar isletmesi|{3} Bilet satis|
+        {4} Temizlik|{5} Garsonluk|{6} Sef|
+        {7} Guvenlik|{8} Eglence',
+    'roles' => '{1} Isveren|{2} başvuru sahibi',
+    'pending' => 'degerlendiriliyor',
+    'accepted' => 'Kabul edildi',
+    'rejected' => 'Kabul edilmedi',
 ];

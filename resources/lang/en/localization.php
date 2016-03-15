@@ -57,5 +57,12 @@ return [
     'apStatMess' => 'The application you have accepted/rejected have been successfully saved',
     'hej' => 'Hi',
     'formMess' => 'We have received your application. We hope to see you soon',
-    'subForm' => 'Submitted Form',   
+    'subForm' => 'Submitted Form', 
+    'competences' => '{1} Grilling sausages|{2} Carousel operation|{3} Ticket sales|
+        {4} Cleaning|{5} Serving|{6} Cooking|
+        {7} Security|{8} Entertaining',
+    'roles' => '{1} recruiter|{2} applicant',
+    'pending' => 'pending',
+    'accepted' => 'accepted',
+    'rejected' => 'rejected',
 ];
