@@ -46,7 +46,6 @@ return [
     'persCom' => 'Personlig kompetens och erfarenhet',
     'applYear' => 'Arbetat med :appCom i :appYear år',
     'applPeriod' => 'Kan endast arbeta dessa perioder',
-    'applPeriod' => 'Kan arbeta från :appFrom till :appTo',
     'aId' => 'Applikations id: ',
     'accept' => 'Acceptera',
     'reject' => 'Avböja',

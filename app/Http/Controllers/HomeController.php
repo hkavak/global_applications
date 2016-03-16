@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use Log;
 use Auth;
 use App;
-use Lang;
+use Session;
 
 class HomeController extends Controller {
 
@@ -18,22 +18,23 @@ class HomeController extends Controller {
      */
     public function __construct() {
         $this->middleware('auth');
+        $this->middleware('Language');
     }
 
     public function postButton(Request $request) {
         if (Input::get('en')) {
             App::setLocale('en');
-            Lang::setFallback('en');
+            Session::put('application_locale', 'en');
             $this->changeLanguage('en');
             return view('home');
         } elseif (Input::get('sv')) {
             App::setLocale('sv');
-            Lang::setFallback('sv');
+            Session::put('application_locale', 'sv');
             $this->changeLanguage('sv');
             return view('home');
         } elseif (Input::get('tr')) {
             App::setLocale('tr');
-            Lang::setFallback('tr');
+            Session::put('application_locale', 'tr');
             $this->changeLanguage('tr');
             return view('home');
         }

@@ -29,6 +29,7 @@ class StatusController extends Controller {
      */
     public function __construct() {
         $this->middleware('auth');
+        $this->middleware('Language');
     }
 
     /**
@@ -78,17 +79,17 @@ class StatusController extends Controller {
             return view('status_success');
         } elseif (Input::get('en')) {
             App::setLocale('en');
-            Lang::setFallback('en');
+            Session::put('application_locale', 'en');
             $this->changeLanguage('en');
             return view('status_application');
         } elseif (Input::get('sv')) {
             App::setLocale('sv');
-            Lang::setFallback('sv');
+            Session::put('application_locale', 'sv');
             $this->changeLanguage('sv');
             return view('status_application');
         } elseif (Input::get('tr')) {
             App::setLocale('tr');
-            Lang::setFallback('sv');
+            Session::put('application_locale', 'tr');
             $this->changeLanguage('tr');
             return view('status_application');
         }

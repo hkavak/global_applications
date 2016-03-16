@@ -46,7 +46,6 @@ return [
     'persCom' => 'Personal Competences and years of work',
     'applYear' => 'Worked with :appCom for :appYear years',
     'applPeriod' => 'Can only work on these periods',
-    'applPeriod' => 'Can work from :appFrom to :appTo',
     'aId' => 'Application id: ',
     'accept' => 'Accept',
     'reject' => 'Reject',

@@ -46,7 +46,6 @@ return [
     'persCom' => 'Kisinin yetenekleri ve deneyimi yillari',
     'applYear' => ' :appCom ile :appYear yil calisti',
     'applPeriod' => 'Sadece bu sure zarfinda calisabilir',
-    'applPeriod' => 'Baslama tarihi :appFrom ve bitis tarihi :appTo',
     'aId' => 'Aplikasyin id: ',
     'accept' => 'Kabul et',
     'reject' => 'Reddet',

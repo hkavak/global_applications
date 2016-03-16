@@ -26,6 +26,7 @@ class PageController extends Controller {
      */
     public function __construct() {
         $this->middleware('auth');
+        $this->middleware('Language');
     }
 
     /**
@@ -77,17 +78,17 @@ class PageController extends Controller {
             return view('application_form');
         } elseif (Input::get('en')) {
             App::setLocale('en');
-            Lang::setFallback('en');
+            Session::put('application_locale', 'en');
             $this->changeLanguage('en');
             return view('application_form');
         } elseif (Input::get('sv')) {
             App::setLocale('sv');
-            Lang::setFallback('sv');
+            Session::put('application_locale', 'sv');
             $this->changeLanguage('sv');
             return view('application_form');
         } elseif (Input::get('tr')) {
             App::setLocale('tr');
-            Lang::setFallback('tr');
+            Session::put('application_locale', 'tr');
             $this->changeLanguage('tr');
             return view('application_form');
         }
