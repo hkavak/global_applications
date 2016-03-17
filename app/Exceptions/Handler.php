@@ -58,7 +58,7 @@ class Handler extends ExceptionHandler {
         elseif ($e instanceof ModelNotFoundException) {
             return response(view('errors.503'), 404);
         }
-        //Database is down
+        //Database can not be reached
         elseif ($e instanceof \PDOException) {
             Log::error('The database is down and currently not available');
             return response(view('errors.503'), 2003);
