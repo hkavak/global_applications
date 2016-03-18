@@ -17,7 +17,7 @@
                         <li><p>{{ trans('localization.applSsn',['ssn' => $object->ssn]) }}</p></li>
                         <li><p>{{ trans('localization.applEmail',['email' => $object->email]) }}</p></li>
                         <li><p>{{ trans('localization.applSd',['Sd' => $object->submissionDate]) }}</p></li>
-                        <li><p>{{ trans('localization.applStatus',['status' => $object->status]) }}</p></li>
+                        <li><p>{{ trans('localization.applstatus',['status' => $object->status]) }}</p></li>
                         @endif
                         @endforeach
                         @endif
@@ -34,7 +34,7 @@
                         @if(Session::has('periodArray'))
                         <h4>{{ trans('localization.applPeriod') }}</h4>
                         @foreach(Session::get('periodArray') as $object)
-                        <li><p>{{ trans('localization.applPeriod',['appFrom' => $object->from_date, 'appTo' => $object->to_date]) }}</p></li>
+                        <li><p>{{ trans('localization.applPeriods',['appFrom' => $object->from_date, 'appTo' => $object->to_date]) }}</p></li>
                         @endforeach
                         @endif
                     </div>

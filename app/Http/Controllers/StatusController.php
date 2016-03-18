@@ -108,6 +108,7 @@ class StatusController extends Controller {
         ]);
         Session::forget('periodArray');
         Session::forget('competenceArray');
+        Session::forget('listArray');
         DB::transaction(function () {
             $currentId = Req::get('appId');
             $competence_profile = \App\Competence_profile::where('application_id', $currentId)->get();
@@ -120,6 +121,15 @@ class StatusController extends Controller {
             foreach ($periods as $period) {
                 $periodObj = new \App\PeriodObj($period->from_date, $period->to_date);
                 Session::push('periodArray', $periodObj);
+            }
+            $applications = \App\Application_form::where('id', $currentId)->get();
+            foreach ($applications as $application) {
+                $first_name = \App\User::where('id', $application->user_id)->value('first_name');
+                $last_name = \App\User::where('id', $application->user_id)->value('last_name');
+                $ssn = \App\User::where('id', $application->user_id)->value('ssn');
+                $email = \App\User::where('id', $application->user_id)->value('email');
+                $applicationDTO = new \App\ApplicationDTO($application->id, $first_name, $last_name, $ssn, $email, $application->date, $application->status);
+                Session::push('listArray', $applicationDTO);
             }
         });
         return view('status_application');
